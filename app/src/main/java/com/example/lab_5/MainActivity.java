@@ -2,6 +2,8 @@ package com.example.lab_5;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,24 +24,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         currencyList = (ListView) findViewById(R.id.currencyList);
         Button generateList = findViewById(R.id.btnGenerateList);
-        TextView tv = findViewById(R.id.currencyTitle);
         adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, currencies);
         currencyList.setAdapter(adapter);
     }
 
     public void btnGenerateList(View view) {
+        currencies.add("Loading....");
+        adapter.notifyDataSetChanged();
         new DataLoader(){
             @Override
             protected void onPostExecute(ArrayList<String> strings) {
                 super.onPostExecute(strings);
                 int size = strings.size();
+                currencies.clear();
                 currencies = new ArrayList<>(strings);
                 for(int i = 0; i < size; i++){
                     adapter.add(currencies.get(i));
                     adapter.notifyDataSetChanged();
                 }
             }
-        }.execute("USD");
+        }.execute();
     }
 
 }

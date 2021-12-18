@@ -11,10 +11,11 @@ import java.util.ArrayList;
 public class Parser {
     public static ArrayList<String> getRates(InputStream stream) throws IOException, XmlPullParserException {
         ArrayList<String> rates = new ArrayList<>();
-        String singleRate = null;
+        String singleRate = "rate";
 
         try {
             XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory.newInstance();
+            xmlFactoryObject.setNamespaceAware(true);
             XmlPullParser myParser = xmlFactoryObject.newPullParser();
             myParser.setInput(stream, null);
 
@@ -22,15 +23,20 @@ public class Parser {
             while (event != XmlPullParser.END_DOCUMENT){
                 String name = myParser.getName();
                 switch (event){
-                    case XmlPullParser.START_TAG:
-                        break;
                     case XmlPullParser.TEXT:
-                        if(name.equals("item")){
-                            singleRate = myParser.getAttributeValue(null,"title" );
-                        }
+                        singleRate = myParser.getText();
                         break;
                     case XmlPullParser.END_TAG:
-                        rates.add(singleRate);
+                        if(name.equalsIgnoreCase("title")){
+                            if(singleRate.startsWith("XML")){
+                                break;
+                            }
+                            else{
+                                rates.add(singleRate);
+                            }
+
+                        }
+                        break;
                 }
                 event = myParser.next();
             }

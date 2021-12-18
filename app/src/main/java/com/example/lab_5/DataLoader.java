@@ -11,15 +11,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
 public class DataLoader extends AsyncTask<String, Void, ArrayList<String>> {
-    ProgressDialog progress;
 
     protected ArrayList<String> doInBackground(String... params){
         ArrayList<String> rates = new ArrayList<>();
         try {
             InputStream stream = downloadUrl(Constants.url);
             rates = Parser.getRates(stream);
+            stream.close();
         } catch (IOException | XmlPullParserException e) {
             e.printStackTrace();
         }

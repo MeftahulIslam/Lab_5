@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Lab_5</string>
-    <string name="currencyTitle">Currency</string>
+    <string name="currencyTitle">USD To Other Currencies: </string>
     <string name="btnGenerateList">Generate List</string>
 </resources>
